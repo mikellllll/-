@@ -70,15 +70,15 @@ var dele = document.querySelectorAll(".dele");
 dele.forEach((ele) => {
   ele.addEventListener("click", deleData);
 });
-// function deleData(e) {
-//   e.target.closest("tr").remove();
-// }
 function deleData(e) {
   const id = e.target.closest("tr").id;
   let index = dataArr.findIndex((val, index) => {
     return val.id == id;
   });
   dataArr.splice(index, 1);
+  for (let i = index; i < dataArr.length; i++) {
+    dataArr[i].id--;
+  }
   window.localStorage.setItem("storageArr", JSON.stringify(dataArr));
   render(dataArr);
 }
@@ -94,7 +94,6 @@ modified.forEach((e) => {
 function modifiedData(e) {
   card.style.opacity = 1;
   mask.style.display = "block";
-  // console.log(e.target.closest("tr").id);
   window.sessionStorage.setItem("id", e.target.closest("tr").id);
 }
 close.addEventListener("click", () => {
@@ -107,10 +106,9 @@ adds.addEventListener("click", () => {
 });
 // 修改功能
 adds.addEventListener("click", () => {
-  console.log(1);
   const book = document.querySelector(".book");
-  const autho = document.querySelector(".autho");
-  const date = document.querySelector(".date");
+  const autho = document.querySelector(".inp.autho");
+  const date = document.querySelector(".input.date");
   const id = window.sessionStorage.getItem("id");
   const data = {
     id,
@@ -121,10 +119,10 @@ adds.addEventListener("click", () => {
   let res = dataArr.find((val, index) => {
     return val.id == id;
   });
-  res.id = id;
-  res.title = book.value;
-  res.user = autho.value;
-  res.date = date.value;
+  res.id = data.id;
+  res.title = data.title;
+  res.user = data.user;
+  res.date = data.date;
   window.localStorage.setItem("storageArr", JSON.stringify(dataArr));
   render(dataArr);
 });
